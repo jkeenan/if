@@ -50,7 +50,8 @@ same effect as:
 
 For example, the F<Unicode::UCD> module's F<charinfo> function will use two functions from F<Unicode::Normalize> only if a certain condition is met:
 
-    use if defined &DynaLoader::boot_DynaLoader, "Unicode::Normalize" => qw(getCombinClass NFD);
+    use if defined &DynaLoader::boot_DynaLoader,
+        "Unicode::Normalize" => qw(getCombinClass NFD);
 
 Suppose you wanted C<ARGUMENTS> to be an empty list, I<i.e.>, to have the
 effect of:

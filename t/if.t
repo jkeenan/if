@@ -46,15 +46,20 @@ unless (eval 'use open ":std"; 1') {
     use strict "subs";
 
     {
-        note(q|strict "subs" : 'use if' : condition false|);
-        eval "use if (0 > 1), q|bigrat|, qw(hex oct);";
-        ok (! main->can('hex'), "Cannot call bigrat::hex() in importing package");
-        ok (! main->can('oct'), "Cannot call bigrat::oct() in importing package");
+        SKIP: {
+            unless ($] >= 5.018) {
+                skip "bigrat apparently not testable prior to perl-5.18", 4;
+            }
+            note(q|strict "subs" : 'use if' : condition false|);
+            eval "use if (0 > 1), q|bigrat|, qw(hex oct);";
+            ok (! main->can('hex'), "Cannot call bigrat::hex() in importing package");
+            ok (! main->can('oct'), "Cannot call bigrat::oct() in importing package");
 
-        note(q|strict "subs" : 'use if' : condition true|);
-        eval "use if (1 > 0), q|bigrat|, qw(hex oct);";
-        ok (  main->can('hex'), "Can call bigrat::hex() in importing package");
-        ok (  main->can('oct'), "Can call bigrat::oct() in importing package");
+            note(q|strict "subs" : 'use if' : condition true|);
+            eval "use if (1 > 0), q|bigrat|, qw(hex oct);";
+            ok (  main->can('hex'), "Can call bigrat::hex() in importing package");
+            ok (  main->can('oct'), "Can call bigrat::oct() in importing package");
+        }
     }
 
     {
